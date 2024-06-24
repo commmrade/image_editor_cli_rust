@@ -9,15 +9,16 @@ fn main() {
     let start = SystemTime::now();
     let mut img : DynamicImage = ImageReader::open("img.jpg").unwrap().decode().unwrap();
     
-    //scale_down(&mut img, 10);
+    //Doing smth with the image...
     scale_down(&mut img, 10);
     rotate_image(&mut img);
+
+    //TODO: Add user interaction
+
     
     //println!("{} s {}", img.width(), img.height());
-    img.into_rgb8().save("here.jpg").unwrap();
-
-
-    let end = SystemTime::now();
+    img.into_rgb8().save("here.jpg").unwrap(); //Saving
+    let end = SystemTime::now(); //Timer
 
     println!("Took {} seconds", end.duration_since(start).unwrap().as_secs());
     //img.save("here.jpg").unwrap();
@@ -30,7 +31,7 @@ fn flip_horizontally(img : &mut DynamicImage)
         for y in 0..img.height()
         {
             let pixel1 = img.get_pixel(x, y);
-            let pixel2 = img.get_pixel(img.width() - x - 1, y);
+            let pixel2 = img.get_pixel(img.width() - x - 1, y); 
 
             img.put_pixel(x, y, pixel2);
             img.put_pixel(img.width() - x - 1, y, pixel1);
@@ -63,8 +64,7 @@ fn scale_down(mut img: &mut DynamicImage, scale: u32) {
             imgbuf.put_pixel(x, y, pixel);
         }
     }
-    let mut mIb = DynamicImage::ImageRgba8(imgbuf);
-    *img = mIb.clone();
+    *img = DynamicImage::ImageRgba8(imgbuf);
 }
 
 fn rotate_image(mut img : &mut DynamicImage)
@@ -76,11 +76,10 @@ fn rotate_image(mut img : &mut DynamicImage)
         for y in 0..imgb.height()
         {
             imgb.put_pixel(x, y, img.get_pixel(y, x));
-
         }
     }
 
-    *img = DynamicImage::ImageRgba8(imgb);
+    *img = DynamicImage::ImageRgba8(imgb); //Making img point to processed image
 
     flip_vertically(&mut img);
 }
