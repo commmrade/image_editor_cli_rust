@@ -95,15 +95,15 @@ fn blur_image(mut img : &mut DynamicImage, blur_strength : u32)
             {
                 for k in 0..blur_strength
                 {
-                    let pixel = img.get_pixel(x + j, y + k);
+                    let pixel = img.get_pixel(x + j, y + k); 
                     value.0[0] += pixel.0[0] as u32;
                     value.0[1] += pixel.0[1] as u32;
                     value.0[2] += pixel.0[2] as u32;
-                    
+                     //Accumulating color and alpha
                 }
             }
             //let mut value1 : Rgba<u8> = ;
-            let divider = blur_strength * blur_strength;
+            let divider = blur_strength * blur_strength; //Averaging color
             img.put_pixel(x, y, Rgba([(value.0[0] / (divider)) as u8, (value.0[1] / (divider)) as u8, (value.0[2] / (divider)) as u8, (value.0[3] / (divider)) as u8]));
         }
     }
